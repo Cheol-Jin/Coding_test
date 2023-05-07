@@ -33,8 +33,10 @@ def solution(bridge_length, weight, truck_weights):
         time = time + 1
         if i < len(truck_weights)-1:
             i = i + 1
+
+    return time
+
             
 #시간복잡도 N^2
             
-
-    return time
+    
