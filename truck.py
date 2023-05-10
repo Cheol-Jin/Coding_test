@@ -38,5 +38,51 @@ def solution(bridge_length, weight, truck_weights):
 
             
 #시간복잡도 N^2
+
+
+def solution(bridge_length, weight, truck_weights):
+    bridge = [0 for _ in range(bridge_length)]
+    bridge = deque(bridge)
+
+    i = 0
+    time = 0
+    already = [] #이미 들어온 트럭
+    count = 0 #트럭 모두 들어온 후의 연산을 위해 설정
+    bridge_sum = 0
+
+    while True:
+        bridge_sum -= bridge[-1]
+        bridge.pop()
+
+        if bridge_sum + truck_weights[i] <= weight and len(already) != len(truck_weights): #다음 트럭이 들어와도 무게가 안 넘치고, 아직 모든 트럭이 들어오지 않았을 때
+            bridge.insert(0, truck_weights[i])
+            already.append(truck_weights[i])
+            bridge_sum += truck_weights[i]
+
+        elif len(already) == len(truck_weights): #마지막 트럭이 들어온 후
+            bridge.appendleft(0) 
+
+        elif bridge_sum + truck_weights[i] > weight: #다음 트럭이 들어오면 무게가 넘치는 경우 
+            bridge.appendleft(0)
+            if bridge_sum + truck_weights[i] <= weight: #트럭이 한 칸씩 이동했을 시 무게가 넘치지 않는 경우
+                bridge.popleft()
+                bridge.appendleft(truck_weights[i])
+                already.append(truck_weights[i]) 
+                bridge_sum += truck_weights[i]       
+            else:
+                i = i - 1
+    
+        if len(already) == len(truck_weights): #마지막 트럭이 들어온 후
+            count = count + 1
+        if count == bridge_length: #마지막 트럭이 다리를 지나갔을 때 while문 탈출
+            time = time + 2
+            break 
+        
+        time = time + 1
+        if i < len(truck_weights) - 1:
+            i = i + 1
+    return time
+
+#시간 복잡도 N 으로 다시 풀어 정답
             
     
